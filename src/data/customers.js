@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { getDb } from '../db/utils';
 import { sql } from '../sql-string';
 
@@ -21,10 +22,17 @@ const ALL_CUSTOMERS_COLUMNS = ['*'];
  * @returns {Promise<Customer[]>} A collection of customers
  */
 export async function getAllCustomers(options = {}) {
-  const db = await getDb();
+  const db = await getDb()
+  let whereClause = ''; 
+  if (options.filter) {
+    whereClause = sql`WHERE (lower(contactname) LIKE lower('%${options.filter}%'))
+    OR (lower(companyname) LIKE lower('%{options.filter}%'))`
   return await db.all(sql`
-SELECT ${ALL_CUSTOMERS_COLUMNS.join(',')}
-FROM Customer`);
+SELECT ${ALL_CUSTOMERS_COLUMNS.map(x => `c.${x}`).join(',')}, count(co.id) as ordercount
+FROM Customer AS c
+LEFT JOIN CustomerOrcder AS co ON co.customer.id = c.id
+${whereClause}
+GROUP BY c.id`)
 }
 
 /**
