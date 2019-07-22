@@ -5,13 +5,11 @@ import { matchedData } from 'express-validator/filter';
 
 import { getAllCustomers } from '../data/customers';
 import { getAllEmployees } from '../data/employees';
-import {
+import updateOrder, {
   createOrder,
   deleteOrder,
   getAllOrders,
-  getOrderWithDetails,
-  updateOrder
-} from '../data/orders';
+  getOrderWithDetails} from '../data/orders';
 import { getAllProducts } from '../data/products';
 import { getAllRegions } from '../data/regions';
 import { getAllShippers } from '../data/shippers';

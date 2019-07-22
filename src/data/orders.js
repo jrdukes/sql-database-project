@@ -163,7 +163,13 @@ export async function createOrder(order, details = []) {
  * @returns {Promise<any>}
  */
 export async function deleteOrder(id) {
-  return Promise.reject('Orders#deleteOrder() NOT YET IMPLEMENTED');
+  const db = await getDb();
+  return await db.all(
+    sql`
+DELETE FROM CustomerOrder
+WHERE orderid = $1`,
+    id
+  );
 }
 
 /**
@@ -173,6 +179,6 @@ export async function deleteOrder(id) {
  * @param {Array<Pick<OrderDetail, 'id' | 'productid' | 'quantity' | 'unitprice' | 'discount'>>} details data for any OrderDetail records to associate with this new CustomerOrder
  * @returns {Promise<Partial<Order>>} the order
  */
-export async function updateOrder(id, data, details = []) {
+export default async function updateOrder(id, data, details = []) {
   return Promise.reject('Orders#updateOrder() NOT YET IMPLEMENTED');
 }
